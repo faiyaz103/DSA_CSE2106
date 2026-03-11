@@ -1,69 +1,64 @@
-//creation
 #include<bits/stdc++.h>
 using namespace std;
 
-class node{
-public:
+// Node Structure
+class Node{
+    public:
     int data;
-    node *link;
+    Node* next;
+
+    // constructor
+    Node(int new_data){
+        this->data=new_data;
+        this->next=nullptr;
+    }
 };
 
+// Create and link nodes
+void createAndLinkNode(Node** head, int data){
 
+    Node* ptr = new Node(data);
 
-/*-----------Creation-----------*/
-void creation(node **head, int data){
-
-    node *ptr = new node();
-
-    ptr->data=data;
-    ptr->link=NULL;
-
-    if(*head==NULL){
-        *head=ptr;
+    if(*head == nullptr){
+        *head = ptr;
     }
     else{
-        node *temp=*head;
-        while(temp->link!=NULL){
-            temp=temp->link;
+        // traverse till next is null
+        Node* temp= *head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
         }
-        temp->link=ptr;
+        temp->next=ptr;
     }
 }
-/*------------------------------*/
 
+// Traverse
+void traverse(Node** head){
+    Node* temp = *head;
 
-
-/*-------Displaying List--------*/
-void display(node **head){
-
-    node *temp=*head;
-
-    while(temp!=NULL){
+    while(temp!=nullptr){
         cout<<temp->data<<' ';
-        temp=temp->link;
+        temp=temp->next;
     }
     cout<<endl;
 }
-/*------------------------------*/
-
-
 
 int main(){
 
-    int n,data;
-    node *head=NULL;
+    int numOfElements;
+    Node* head=nullptr; //To keep track of the start of the list
+    
+    cout<<"Enter num of nodes you wanna generate:"<<endl;
+    cin>>numOfElements;
 
-    cout<<"Enter number of elements:"<<endl;
-    cin>>n;
-
-    for(int i=1; i<=n; i++){
-        cout<<"Enter element number "<<i<<endl;
+    for(int i=0; i<numOfElements; i++){
+        cout<<"Enter data for "<<i+1<<" node"<<endl;
+        int data;
         cin>>data;
-        creation(&head, data);
+        createAndLinkNode(&head, data);
     }
 
-    cout<<"The Elements are:"<<endl;
-    display(&head);
+    traverse(&head);
 
     return 0;
 }
