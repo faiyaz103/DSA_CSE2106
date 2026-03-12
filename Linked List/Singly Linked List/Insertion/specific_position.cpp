@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+int n;
+
 class Node{
     public:
     int data;
@@ -37,22 +39,40 @@ void createAndLink(int data, Node** head){
     }
 }
 
-void insertAtEnd(int data, Node** head){
+void insertAtBeginning(int data, Node** head){
 
-    Node* ptr=new Node(data);
+    Node* ptr = new Node(data);
+    ptr->next=*head;
+    *head=ptr;
 
-    Node* temp = *head;
-    while(temp->next!=nullptr){
+    cout<<"After insertion"<<endl;
+    traverse(head);
+    
+}
+
+void insertSpecificPos(int data, int pos, Node** head){
+
+    if(pos==0){
+        insertAtBeginning(data,head);
+        return;
+    }
+
+    Node* temp=*head;
+    Node* aux;
+    for(int i=0; i<pos; i++){
+        aux=temp;
         temp=temp->next;
     }
-    temp->next=ptr;
 
-    cout<<"After insertion at end"<<endl;
+    Node* ptr=new Node(data);
+    ptr->next=aux->next;
+    aux->next=ptr;
+
+    cout<<"After insertion"<<endl;
     traverse(head);
 }
 
 int main(){
-    int n;
     Node* head=nullptr;
     cin>>n;
 
@@ -65,7 +85,10 @@ int main(){
     cout<<"Before insertion"<<endl;
     traverse(&head);
 
-    insertAtEnd(12,&head);
+    int pos;
+    cin>>pos;
+
+    insertSpecificPos(12,pos,&head);
 
     return 0;
 }
