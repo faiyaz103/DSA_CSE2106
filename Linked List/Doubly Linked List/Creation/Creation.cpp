@@ -1,74 +1,60 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-class node{
+class Node{
     public:
     int data;
-    node *next,*prev;
+    Node* prev;
+    Node* next;
+
+    Node(int d){
+        this->data=d;
+        this->prev=nullptr;
+        this->next=nullptr;
+    }
 };
 
+void traverse(Node** head){
 
-
-/*----------Creation----------*/
-void creation(node **head, int data){
-
-    node *ptr=new node();
-
-    ptr->data=data;
-    ptr->next=NULL;
-    ptr->prev=NULL;
-
-    if(*head==NULL){
-        *head=ptr;
-    }
-    else{
-        node *temp=*head;
-
-        while(temp->next!=NULL){
-            temp=temp->next;
-        }
-        temp->next=ptr;
-        ptr->prev=temp;
-    }
-}
-/*----------------------------*/
-
-
-
-/*-----------Display----------*/
-void display(node **head){
-
-    node *temp=*head;
-
-    while(temp!=NULL){
-        cout<<temp->data<<' ';
+    Node* temp=*head;
+    while(temp!=nullptr){
+        cout<<"|"<<(uintptr_t)temp->prev<<"|"<<temp->data<<"|"<<(uintptr_t)temp->next<<"|("<<(uintptr_t)&(*temp)<<")"<<"--->";
         temp=temp->next;
     }
     cout<<endl;
 }
-/*----------------------------*/
 
+void create(int data, Node** head){
 
+    Node* newNode=new Node(data);
+
+    if(*head==nullptr){
+        *head=newNode;
+    }
+    else{
+        Node *temp=*head;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        temp->next=newNode;
+        newNode->prev=temp;
+    }
+
+    
+
+    cout<<"After insertion"<<endl;
+    traverse(head);
+}
 
 int main(){
 
-    int n,data;
-    node *head=NULL;
+    int a[]={1,2,3,4,5};
+    Node* head=nullptr;
+    int len=sizeof(a)/sizeof(a[0]);
 
-    cout<<"Enter number of elements: ";
-    cin>>n;
-    cout<<endl;
-
-    for(int i=1; i<=n; i++){
-        cout<<"Enter "<<i<<"th element: ";
-        cin>>data;
-        cout<<endl;
-
-        creation(&head,data);
+    for(int i=0; i<len; i++){
+        create(a[i],&head);
     }
-
-    cout<<"The elements are:"<<endl;
-    display(&head);
 
     return 0;
 }
