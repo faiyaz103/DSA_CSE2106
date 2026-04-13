@@ -1,86 +1,67 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-void merge(int a[], int l, int m, int r){
+void merge(vector<int>& arr, int left, int mid, int right){
 
-    int n1=(m-l)+1;
-    int n2=r-m;
+    vector<int> L(arr.begin()+left, arr.begin()+mid+1);
+    vector<int> R(arr.begin()+mid+1, arr.begin()+right+1);
 
-    int L[n1], R[n2];
+    int i=0, j=0, k=left;
 
-    for(int i=0; i<n1; i++){
-        L[i]=a[l+i];
-    }
-    for(int i=0; i<n2; i++){
-        R[i]=a[(m+1)+i];
-    }
-
-    int i=0,j=0,k=l;
-
-    while(i<n1 && j<n2){
-
+    while(i<L.size() && j<R.size()){
         if(L[i]<=R[j]){
-            a[k]=L[i];
+            arr[k]=L[i];
+            k++;
             i++;
         }
         else{
-            a[k]=R[j];
+            arr[k]=R[j];
+            k++;
             j++;
         }
-        k++;
     }
 
-    while(i<n1){
-        a[k]=L[i];
+    while(i<L.size()){
+        arr[k]=L[i];
+        k++;
         i++;
-        k++;
     }
-    while(j<n2){
-        a[k]=R[j];
+
+    while(j<R.size()){
+        arr[k]=R[j];
+        k++;
         j++;
-        k++;
     }
 }
 
-void merge_sort(int a[], int l, int r){
+void mergeSort(vector<int>& arr, int left, int right){
+    // base condition
+    if(left>=right) return;
 
-    if(l<r){
+    int mid=left+(right-left)/2; // Avoid integer overflow vs (l+r)/2
 
-        int m=(l+(r-1))/2;
-
-        merge_sort(a,l,m);
-        merge_sort(a,m+1,r);
-
-        merge(a,l,m,r);
-    }
-}
-
-void print(int a[], int n){
-
-    for(int i=0; i<n; i++){
-        cout<<a[i]<<' ';
-    }
-    cout<<endl;
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid+1, right);
+    merge(arr, left, mid, right);
 }
 
 int main(){
 
-    int n;
-    cout<<"Enter number of elements:"<<endl;
-    cin>>n;
+    vector<int> arr={3,4,1,6,2,9};
 
-    int a[n];
-    cout<<"Enter elements:"<<endl;
-    for(int i=0; i<n; i++){
-        cin>>a[i];
+    cout<<"Before Sorting"<<endl;
+    for (auto i:arr){
+        cout<<i<<' ';
     }
+    cout<<endl;
 
-    cout<<"Before Sorting:"<<endl;
-    print(a,n);
+    mergeSort(arr, 0, arr.size()-1);
 
-    merge_sort(a,0,n-1);
-    cout<<"After Sorting:"<<endl;
-    print(a,n);
+    cout<<"After Sorting"<<endl;
+    for (auto i:arr){
+        cout<<i<<' ';
+    }
+    cout<<endl;
 
     return 0;
 }
